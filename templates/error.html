@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Error</title>
+    <link rel="stylesheet" href="/static/icons/css/all.css">
+    <link
+      rel="stylesheet"
+      href="{{url_for('static',filename='dist/css/output.css')}}"
+    />
+  </head>
+
+  <body class="bg-black">
+    <img
+      src="static/bgError.png"
+      class="h-screen w-screen select-none absolute z-0 blur-xl"
+      alt="background"
+    />
+
+    <div class="h-screen flex items-center justify-center">
+      <div
+        class="bg-[#212121]/70 backdrop-blur-sm p-[15px] z-50 rounded-[30px] drop-shadow-2xl"
+      >
+        <div class="flex flex-col gap-5">
+          <div class="flex gap-5">
+            <i class="fa-solid fa-circle-xmark text-6xl text-red-500"></i>
+            <div class="flex flex-col text-left self-center">
+              <div class="text-white font-bold text-xl">Error occured</div>
+              <div class="text-white">
+                We've run into an error. You can view the error message or try
+                again.
+              </div>
+            </div>
+          </div>
+          <div class="flex justify-between flex-row-reverse">
+            <div class="flex flex-row-reverse gap-2">
+              <a href="/" class="text-black bg-white px-5 py-2 rounded-full"
+                >Try again</a
+              >
+              <button
+                id="errorButton"
+                class="bg-[#212121]/70 px-5 py-2 rounded-full text-white"
+              >
+                View error
+              </button>
+            </div>
+
+            <div class="flex gap-2 self-center bg-red-700/30 px-5 py-2 rounded-full text-gray-400">
+              <div class="self-center">{{status}}</div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="circleDownModal"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80"
+      style="display: none"
+    >
+      <div class="flex h-screen items-center justify-center">
+        <div class="rounded-[20px] mx-10 bg-[#1a1a1a] p-[15px] drop-shadow-2xl">
+          <div class="flex flex-col gap-2">
+            <div class="flex justify-between gap-20">
+              <p class="self-center font-bold text-white">Error Occured</p>
+              <button
+                class="close h-[25px] w-[25px] rounded-full bg-[#2c2c2c] text-white"
+              >
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+            </div>
+            <div class="text-white">{{error}}</div>
+            <div class="flex flex-row-reverse justify-between gap-10">
+              <div class="flex gap-2"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Get the button that opens the modal
+      var btn = document.getElementById("errorButton");
+
+      // Get the <span> element that closes the modal
+      var span = document.getElementsByClassName("close")[0];
+
+      // Get the modal
+      var modal = document.getElementById("circleDownModal");
+
+      // When the user clicks the button, open the modal
+      btn.onclick = function () {
+        modal.style.display = "flex";
+      };
+
+      // When the user clicks on <span> (x), close the modal
+      span.onclick = function () {
+        modal.style.display = "none";
+      };
+
+      // When the user clicks anywhere outside of the modal, close it
+      window.onclick = function (event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      };
+    </script>
+  </body>
+</html>

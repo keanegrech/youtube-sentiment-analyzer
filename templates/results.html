@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Results</title>
+    <link rel="stylesheet" href="/static/icons/css/all.css">
+    <link
+      rel="stylesheet"
+      href="{{url_for('static',filename='dist/css/output.css')}}"
+    />
+  </head>
+  <body class="bg-black font-sans">
+    <img
+      src="static/bg.jpg"
+      class="h-screen w-screen select-none absolute z-0 blur-xl"
+      alt="background"
+    />
+
+    <div class="h-screen flex items-center justify-center">
+      <div class="flex flex-col gap-5">
+        <div
+          class="bg-[#212121]/70 backdrop-blur-sm p-[15px] z-50 rounded-[20px] drop-shadow-2xl"
+        >
+          <div class="flex flex-col justify-between gap-5">
+            <div class="flex justify-between">
+              <div class="flex gap-3">
+                <a
+                  class="bg-[#1a1a1a]/70 px-5 h-full text-center rounded-[10px]"
+                  href="/"
+                  ><i
+                    class="fa-solid fa-arrow-left text-sm self-center text-white"
+                  ></i
+                ></a>
+                <div class="flex gap-2">
+                  <i class="fa-brands fa-youtube text-white self-center"></i>
+                  <div class="text-white">YouTube Comment Checker</div>
+                </div>
+              </div>
+              <a
+                class="text-[#9ca3af] font-mono hover:underline"
+                href="https://status.cloud.google.com/"
+              >
+                <i class="fa-solid fa-flag text-sm"></i> Not Working?</a
+              >
+            </div>
+          </div>
+        </div>
+        <div
+          class="bg-[#212121]/70 backdrop-blur-sm p-[15px] z-50 rounded-[20px] drop-shadow-2xl"
+        >
+          <div class="flex gap-4">
+            <img
+              src="{{thumbnailURL}}"
+              alt="Video Thumbnail"
+              class="rounded-[10px] w-[240px]"
+            />
+            <div class="flex flex-col justify-between">
+              <div class="flex flex-col">
+                <div class="text-white font-bold">{{title}}</div>
+                <div class="text-[#9ca3af]">{{channelTitle}}</div>
+                <div class="text-[#9ca3af]">{{datePublished}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="bg-[#212121]/70 flex flex-col gap-3 backdrop-blur-sm p-[15px] z-50 rounded-[20px] drop-shadow-2xl"
+        >
+          <div class="flex justify-between">
+            <div class="flex gap-2">
+              <div class="bg-[#1a1a1a]/70 text-white py-2 px-3 rounded-[10px]">
+                <i class="fa-regular fa-thumbs-up"></i> {{likeCount}}
+              </div>
+              <div class="bg-[#1a1a1a]/70 text-white py-2 px-3 rounded-[10px]">
+                <i class="fa-regular fa-comment"></i> {{commentCount}}
+              </div>
+            </div>
+            <div class="flex gap-2 flex-row-reverse">
+              <a
+                class="bg-white hover:shadow-lg hover:shadow-white/50 duration-200 py-2 px-3 rounded-[10px]"
+                href="https://www.youtube.com/watch?v={{ytId}}"
+              >
+                <i class="fa-brands fa-youtube text-black self-center"></i>
+              </a>
+              <button
+                id="cloudButton"
+                class="bg-white hover:shadow-lg hover:shadow-white/50 duration-200 py-2 px-3 rounded-[10px]"
+              >
+                <i class="fa-solid fa-cloud"></i>
+              </button>
+              <button
+                id="circleDownButton"
+                class="bg-white hover:shadow-lg hover:shadow-white/50 duration-200 py-2 px-3 rounded-[10px]"
+              >
+                <i class="fa-solid fa-circle-down"></i>
+              </button>
+            </div>
+          </div>
+          <div class="flex gap-2">
+            <div class="w-full">{{htmlData | safe}}</div>
+            <button
+              class="bg-[#1a1a1a]/70 px-3 text-center rounded-[10px] text-white flex gap-2"
+              id="doubleArrowButton"
+            >
+              <i class="fa-solid fa-angles-right self-center"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <div
+    id="myModal"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80"
+    style="display: none"
+  >
+    <div class="h-screen flex items-center justify-center">
+      <div class="bg-[#1a1a1a] p-[15px] rounded-[20px] drop-shadow-2xl">
+        <div class="flex gap-2 flex-col">
+          <div class="flex justify-between gap-20">
+            <p class="text-white font-bold self-center">Generated Word Cloud</p>
+            <button
+              class="close bg-[#2c2c2c] rounded-full text-white w-[25px] h-[25px]"
+            >
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+          <div class="">
+            <img
+              src="static/wordcloud.png"
+              class="w-[300px] rounded-[10px]"
+              alt="Generated Wordcloud"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Add this new modal to your HTML -->
+  <div
+    id="circleDownModal"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80"
+    style="display: none"
+  >
+    <div class="flex h-screen items-center justify-center">
+      <div class="rounded-[20px] bg-[#1a1a1a] p-[15px] drop-shadow-2xl">
+        <div class="flex flex-col gap-2">
+          <div class="flex justify-between gap-20">
+            <p class="self-center font-bold text-white">Download Comments</p>
+            <button
+              class="close h-[25px] w-[25px] rounded-full bg-[#2c2c2c] text-white"
+            >
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+          <div class="text-white">
+            Are you sure you want to download the comments?
+          </div>
+          <div class="flex flex-row-reverse justify-between gap-10">
+            <div class="flex gap-2">
+              <a
+                download
+                href="static/comments.txt"
+                class="rounded-[10px] bg-[#007AFF] px-3 py-2 text-white hover:shadow-lg hover:shadow-[#007AFF]/50 duration-200"
+              >
+                Download
+              </a>
+            </div>
+            <div class="flex rounded-[10px] bg-[#2c2c2c] px-3 text-gray-300">
+              <div class="flex gap-2 self-center font-bold">
+                <i class="fa-solid fa-file-lines self-center"></i>
+                <div>comments.txt</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    id="doubleArrowModal"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80"
+    style="display: none"
+  >
+    <div class="flex h-screen items-center justify-center mx-10">
+      <div class="rounded-[20px] bg-[#1a1a1a] p-[15px] drop-shadow-2xl">
+        <div class="flex flex-col gap-2">
+          <div class="flex justify-between gap-20">
+            <p class="self-center font-bold text-white">More Details</p>
+            <button
+              class="close h-[25px] w-[25px] rounded-full bg-[#2c2c2c] text-white"
+            >
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+          <div class="flex flex-col gap-5 text-white">
+            <div class="">
+              <div class="">Most positive comment</div>
+              <div class="flex gap-2">
+                <div
+                  class="w-full rounded-[10px] bg-gradient-to-r from-[#135541] to-[#0d3b18] p-2"
+                >
+                  {{mostPositiveComment}}
+                </div>
+                <div class="rounded-[10px] bg-[#2c2c2c] p-2">
+                  {{mostPositiveCommentScore}}
+                </div>
+              </div>
+            </div>
+            <div class="">
+              <div class="">Most negative comment</div>
+              <div class="flex gap-2">
+                <div
+                  class="w-full rounded-[10px] bg-gradient-to-r from-[#551313] to-[#3b0d0d] p-2"
+                >
+                  {{mostNegativeComment}}
+                </div>
+                <div class="rounded-[10px] bg-[#2c2c2c] p-2">
+                  {{mostNegativeCommentScore}}
+                </div>
+              </div>
+            </div>
+            <div class="">
+              <div class="">Most impactful words</div>
+              <div class="flex gap-2">
+                <div
+                  class="w-full rounded-[10px] bg-[#2c2c2c] bg-gradient-to-r p-2"
+                >
+                  {{mostImpactfulWords}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Get the modal
+    var modal = document.getElementById("myModal");
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("cloudButton");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks the button, open the modal
+    btn.onclick = function () {
+      modal.style.display = "block";
+    };
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function () {
+      modal.style.display = "none";
+    };
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    };
+
+    // Add this JavaScript to handle the button click
+    document
+      .getElementById("circleDownButton")
+      .addEventListener("click", function () {
+        document.getElementById("circleDownModal").style.display = "flex";
+      });
+
+    // Add this JavaScript to handle the close button click in the new modal
+    document
+      .querySelector("#circleDownModal .close")
+      .addEventListener("click", function () {
+        document.getElementById("circleDownModal").style.display = "none";
+      });
+
+    // Get the button that opens the double arrow modal
+    var btnDoubleArrow = document.getElementById("doubleArrowButton");
+
+    // Get the double arrow modal
+    var modalDoubleArrow = document.getElementById("doubleArrowModal");
+
+    // When the user clicks the button, open the modal
+    btnDoubleArrow.onclick = function () {
+      modalDoubleArrow.style.display = "flex";
+    };
+
+    // Get the <span> element that closes the modal
+    var spanDoubleArrow = modalDoubleArrow.getElementsByClassName("close")[0];
+
+    // When the user clicks on <span> (x), close the modal
+    spanDoubleArrow.onclick = function () {
+      modalDoubleArrow.style.display = "none";
+    };
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+      if (event.target == modalDoubleArrow) {
+        modalDoubleArrow.style.display = "none";
+      }
+    };
+  </script>
+</html>

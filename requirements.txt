@@ -1,0 +1,9 @@
+flask
+google-api-python-client
+python-dotenv
+nltk
+numpy
+scikit-learn
+vaderSentiment
+matplotlib
+wordcloud
