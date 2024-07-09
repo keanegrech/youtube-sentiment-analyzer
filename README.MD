@@ -43,7 +43,7 @@ This is a Python project that analyzes the sentiment of comments on YouTube vide
 
 2. Access the web interface
 
-    Open your web browser and go to [http://127.0.0.1:5000](http://127.0.0.1:5000)>
+    Open your web browser and go to [http://127.0.0.1:5000](http://127.0.0.1:5000)
     > The default port is 5000, it can be changed from the .env file.
 
 4. Fetch comments:
